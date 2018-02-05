@@ -3,11 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         tools:context="com.example.hzliyongan.test.MainActivity">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <Button
+                android:id="@+id/simpleInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/simpleInfo"/>
+
+            <Button
+                android:id="@+id/showString"
+                android:layout_width="match_parent"
+                android:text="@string/showString"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/text"
@@ -19,5 +41,5 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 </ScrollView>

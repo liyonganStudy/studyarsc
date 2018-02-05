@@ -42,9 +42,12 @@ public class ParseResourceMain{
 
         stringBuilder.append("parse resstring pool chunk...\n");
         stringBuilder.append(ParseResourceUtils.parseResStringPoolChunk(srcByte).toString());
-        stringBuilder.append(ParseResourceUtils.getResStringPoolStrings());
         stringBuilder.append("++++++++++++++++++++++++++++++++++++++\n");
 
         return stringBuilder.toString();
+    }
+
+    public static String showStringPoolStrings() {
+        return ParseResourceUtils.getResStringPoolStrings();
     }
 }

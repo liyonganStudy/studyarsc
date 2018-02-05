@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Test</string>
+    <string name="simpleInfo">显示简单信息</string>
+    <string name="showString">显示字符串常量池</string>
 </resources>
