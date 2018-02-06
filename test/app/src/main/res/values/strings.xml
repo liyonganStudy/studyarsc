@@ -2,4 +2,6 @@
     <string name="app_name">Test</string>
     <string name="simpleInfo">显示简单信息</string>
     <string name="showString">显示字符串常量池</string>
+    <string name="showTypeString">显示资源类型字符串池</string>
+    <string name="showKeyString">显示资源关键字字符串池</string>
 </resources>

@@ -27,8 +27,17 @@
                 android:layout_width="match_parent"
                 android:text="@string/showString"
                 android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/showTypeString"
+                android:layout_width="match_parent"
+                android:text="@string/showTypeString"
+                android:layout_height="wrap_content" />
 
-
+            <Button
+                android:id="@+id/showKeyString"
+                android:layout_width="match_parent"
+                android:text="@string/showKeyString"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <TextView

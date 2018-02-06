@@ -45,5 +45,19 @@ public class MainActivity extends AppCompatActivity {
                 textView.setText(ParseResourceMain.showStringPoolStrings());
             }
         });
+
+        findViewById(R.id.showTypeString).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textView.setText(ParseResourceMain.showTypePoolStrings());
+            }
+        });
+
+        findViewById(R.id.showKeyString).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textView.setText(ParseResourceMain.showKeyPoolStrings());
+            }
+        });
     }
 }

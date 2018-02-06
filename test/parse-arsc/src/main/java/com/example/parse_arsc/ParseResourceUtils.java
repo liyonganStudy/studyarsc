@@ -3,6 +3,7 @@ package com.example.parse_arsc;
 import com.example.parse_arsc.type.ResChunkHeader;
 import com.example.parse_arsc.type.ResStringPoolHeader;
 import com.example.parse_arsc.type.ResTableHeader;
+import com.example.parse_arsc.type.ResTablePackage;
 
 import java.util.ArrayList;
 
@@ -15,8 +16,15 @@ public class ParseResourceUtils {
     private static int packageChunkOffset;//包内容的偏移值
     private static int keyStringPoolChunkOffset;//key字符串池的偏移值
     private static int typeStringPoolChunkOffset;//类型字符串池的偏移值
+    private static int resTypeOffset;//解析资源的类型的偏移值
 
-    private static ArrayList<String> resStringList = new ArrayList<>();//所有的字符串池
+    //资源包的id和类型id
+    private static int packId;
+    private static int resTypeId;
+
+    private static ArrayList<String> resStringList = new ArrayList<String>();//所有的字符串池
+    private static ArrayList<String> keyStringList = new ArrayList<String>();//所有的资源key的值的池
+    private static ArrayList<String> typeStringList = new ArrayList<String>();//所有类型的值的池
 
     public static ResTableHeader parseResTableHeaderChunk(byte[] src){
         ResTableHeader resTableHeader = new ResTableHeader();
@@ -59,6 +67,24 @@ public class ParseResourceUtils {
     public static String getResStringPoolStrings() {
         StringBuilder stringBuilder = new StringBuilder("res string pool's strings:\n");
         for (String s: resStringList) {
+            stringBuilder.append(s);
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    public static String getTypeStringPoolStrings() {
+        StringBuilder stringBuilder = new StringBuilder("resource type string pool's strings:\n");
+        for (String s: typeStringList) {
+            stringBuilder.append(s);
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    public static String getKeyStringPoolStrings() {
+        StringBuilder stringBuilder = new StringBuilder("resource key string pool's strings:\n");
+        for (String s: keyStringList) {
             stringBuilder.append(s);
             stringBuilder.append("\n");
         }
@@ -129,6 +155,69 @@ public class ParseResourceUtils {
             index++;
         }
         return stringPoolHeader;
+    }
 
+    /**
+     * 解析Package信息
+     * @param src
+     */
+    public static ResTablePackage parsePackage(byte[] src){
+        ResTablePackage resTabPackage = new ResTablePackage();
+        //解析头部信息
+        resTabPackage.header = parseResChunkHeader(src, packageChunkOffset);
+
+        int offset = packageChunkOffset + resTabPackage.header.getHeaderSize();
+
+        //解析packId
+        byte[] idByte = Utils.copyByte(src, offset, 4);
+        resTabPackage.id = Utils.byte2int(idByte);
+        packId = resTabPackage.id;
+
+        //解析包名
+        byte[] nameByte = Utils.copyByte(src, offset+4, 128*2);//这里的128是这个字段的大小，可以查看类型说明，是char类型的，所以要乘以2
+        String packageName = new String(nameByte);
+        packageName = Utils.filterStringNull(packageName);
+        resTabPackage.packageName = packageName;
+
+        //解析类型字符串的偏移值
+        byte[] typeStringsByte = Utils.copyByte(src, offset+4+128*2, 4);
+        resTabPackage.typeStrings = Utils.byte2int(typeStringsByte);
+
+        //解析lastPublicType字段
+        byte[] lastPublicType = Utils.copyByte(src, offset+8+128*2, 4);
+        resTabPackage.lastPublicType = Utils.byte2int(lastPublicType);
+
+        //解析keyString字符串的偏移值
+        byte[] keyStrings = Utils.copyByte(src, offset+12+128*2, 4);
+        resTabPackage.keyStrings = Utils.byte2int(keyStrings);
+        System.out.println("keyString:"+resTabPackage.keyStrings);
+
+        //解析lastPublicKey
+        byte[] lastPublicKey = Utils.copyByte(src, offset+12+128*2, 4);
+        resTabPackage.lastPublicKey = Utils.byte2int(lastPublicKey);
+
+        //这里获取类型字符串的偏移值和类型字符串的偏移值
+        keyStringPoolChunkOffset = (packageChunkOffset+resTabPackage.keyStrings);
+        typeStringPoolChunkOffset = (packageChunkOffset+resTabPackage.typeStrings);
+        return resTabPackage;
+    }
+
+    /**
+     * 解析类型字符串内容
+     * @param src
+     */
+    public static ResStringPoolHeader parseTypeStringPoolChunk(byte[] src){
+        return parseStringPoolChunk(src, typeStringList, typeStringPoolChunkOffset);
+    }
+
+    /**
+     * 解析key字符串内容
+     * @param src
+     */
+    public static ResStringPoolHeader parseKeyStringPoolChunk(byte[] src){
+        ResStringPoolHeader stringPoolHeader  = parseStringPoolChunk(src, keyStringList, keyStringPoolChunkOffset);
+        //解析完key字符串之后，需要赋值给resType的偏移值,后续还需要继续解析
+        resTypeOffset = (keyStringPoolChunkOffset+stringPoolHeader.header.size);
+        return stringPoolHeader;
     }
 }

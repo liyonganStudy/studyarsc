@@ -44,10 +44,30 @@ public class ParseResourceMain{
         stringBuilder.append(ParseResourceUtils.parseResStringPoolChunk(srcByte).toString());
         stringBuilder.append("++++++++++++++++++++++++++++++++++++++\n");
 
+        stringBuilder.append("parse package chunk...\n");
+        stringBuilder.append(ParseResourceUtils.parsePackage(srcByte).toString());
+        stringBuilder.append("++++++++++++++++++++++++++++++++++++++\n");
+
+        stringBuilder.append("parse typestring pool chunk...\n");
+        stringBuilder.append(ParseResourceUtils.parseTypeStringPoolChunk(srcByte).toString());
+        stringBuilder.append("++++++++++++++++++++++++++++++++++++++\n");
+
+        stringBuilder.append("parse keystring pool chunk...\n");
+        stringBuilder.append(ParseResourceUtils.parseKeyStringPoolChunk(srcByte).toString());
+        stringBuilder.append("++++++++++++++++++++++++++++++++++++++\n");
+
         return stringBuilder.toString();
     }
 
     public static String showStringPoolStrings() {
         return ParseResourceUtils.getResStringPoolStrings();
+    }
+
+    public static String showTypePoolStrings() {
+        return ParseResourceUtils.getTypeStringPoolStrings();
+    }
+
+    public static String showKeyPoolStrings() {
+        return ParseResourceUtils.getKeyStringPoolStrings();
     }
 }
