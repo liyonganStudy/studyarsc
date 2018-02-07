@@ -56,6 +56,23 @@ public class ParseResourceMain{
         stringBuilder.append(ParseResourceUtils.parseKeyStringPoolChunk(srcByte).toString());
         stringBuilder.append("++++++++++++++++++++++++++++++++++++++\n");
 
+        int resCount = 0;
+        while(!ParseResourceUtils.isEnd(srcByte.length)){
+            resCount++;
+            boolean isSpec = ParseResourceUtils.isTypeSpec(srcByte);
+            if(isSpec){
+                stringBuilder.append("parse restype spec chunk...");
+                stringBuilder.append(ParseResourceUtils.parseResTypeSpec(srcByte).toString());
+                stringBuilder.append("++++++++++++++++++++++++++++++++++++++\n");
+            }else{
+                stringBuilder.append("parse restype info chunk...");
+                stringBuilder.append(ParseResourceUtils.parseResTypeInfo(srcByte).toString());
+                stringBuilder.append("++++++++++++++++++++++++++++++++++++++\n");
+            }
+        }
+        stringBuilder.append("res count:");
+        stringBuilder.append(resCount);
+
         return stringBuilder.toString();
     }
 
